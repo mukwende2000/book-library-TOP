@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Book Library</title>
+</head>
+<body>
+    <div class="library">
+        <header>
+            <h1>Library</h1>
+            <button>sign in</button>
+        </header>
+        <main>
+            <div class="books empty">
+                
+                <button class="popup-btn"><span>+</span></button>
+            </div>
+            <div class="information">
+                <h1>Information</h1>
+                <div class="table">
+                    <div class="info">
+                        <p>Books</p>
+                        <div class="books-stats">0</div>
+                    </div>
+                    <div class="info">
+                        <p>Completed Books</p>
+                        <div class="completed-book-stats">0</div>
+                    </div>
+                    <div class="info">
+                        <p>Total Pages</p>
+                        <div class="total-page-stats">0</div>
+                    </div>
+                    <div class="info">
+                        <p>completed</p>
+                        <div class="completed-stats">0</div>
+                    </div>
+                </div>
+                <h1>Storage Options</h1>
+                <button>Delete Local</button>
+                <p class="credit">Design Credit: Igorash</p>
+            </div>
+        </main>
+        <div class="popup">
+            <h1>Add New book</h1>
+            <form>
+                <input type="text" placeholder="Title" required>
+                <input type="text" placeholder="Author" required>
+                <input type="number" placeholder="Total Pages" required>
+                <input type="number" placeholder="Completed Pages" required>
+                <span class="message" style="color: red; margin: 20px;"></span>
+            </form>
+            <div class="buttons">
+                <button class="cancel-btn">Cancel</button>
+                <button class="add-btn">Add</button>
+            </div>
+        </div>
+    </div>
+    <div class="overlay"></div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: sans-serif;
+}
+button {
+    cursor: pointer;
+}
+main, header {
+    display: flex;
+}
+header {
+    background-color: #000;
+    justify-content: space-between;
+    padding: 2rem;
+    position: sticky;
+    top: 0;
+}
+header button {
+    background-color: coral;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    padding: 0 20px;
+    transition: .4s;
+}
+header button:hover,
+.information button:hover {
+    background-color: crimson;
+}
+.books {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background-color: rgba(32, 0, 32, 1);
+    flex-basis: 80%;
+    row-gap: 10px;
+    min-height: 83vh;
+}
+.books .book {
+    background-color: rgba(66, 66, 66, .8);
+    color: #fff;
+    
+    width: 200px;
+    height: 250px;
+
+    border: 5px solid rgb(39, 5, 71);
+    border-radius: 10px;
+}
+.book .header button {
+    width: 48%;
+    border: none;
+    padding: 10px 0;;
+}
+.book .header button:hover,
+.increase:hover,
+.decrease:hover {
+    scale: .96;
+}
+.completed {
+    padding: .5rem;
+    font-size: 1rem;
+    background-color: red;
+    border: none;
+    border-radius: 3px;
+}
+.book .header button:last-child {
+    background-color: red;
+    color: #fff;
+    border-top-right-radius: 5px;
+}
+.book .header button:first-child {
+    background-color: green;
+    color: #fff;
+    border-top-left-radius: 5px;
+}
+.book .book-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60%;
+}
+.increase,
+.decrease {
+    width: 20%;
+    border: none;
+    border-radius: 3px;
+    font-size: 1rem;
+}
+.book .pages,
+.book .read-status {
+    display: flex;
+    justify-content: space-evenly;
+    margin-block: 5px;
+}
+.books > button {
+    background-color: rgba(66, 66, 66, .8);
+    color: #fff;
+    
+    width: 200px;
+    height: 250px;
+
+    border: 5px solid rgb(39, 5, 71);
+    border-radius: 10px;
+    font-size: 10rem;
+    transition: .5s;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+;
+}
+.popup-btn:hover {
+    scale: 1.1;
+}
+.books button span {
+    transition: .5s;
+}
+.books button:hover span {
+    rotate: 90deg;
+    color: green;
+}
+.information {
+    background-color: rgba(66, 66, 66, .8);
+    padding: 2rem;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    top: 100px;
+}
+.information h1 {
+    text-align: center;
+    padding: .5rem 0;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+}
+.info {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+.information button {
+    background-color: coral;
+    padding: 10px 2rem;
+    border-radius: 10px;
+    border: none;
+    display: block;
+    margin: 1rem auto;
+    color: #fff;
+    font-size: 1rem;
+    transition: .4s;;
+}
+.credit {
+    text-align: center;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+}
+.popup {
+    position: relative;
+    top: -500px;
+    background-color: rgb(67, 35, 67);
+    outline: 1px solid coral;
+    width: 400px;
+    margin: auto;
+    border-radius: 5px;
+    display: none;
+    opacity: 0;
+    transition: all 1s;
+    z-index: 100;
+}
+
+.popup h1 {
+    background-color: green;
+    text-align: center;
+}
+.popup input {
+    display: block;
+    width: 90%;
+    background-color: transparent;
+    color: grey;
+    border: 0;
+    border-bottom: 2px solid grey;
+    margin: 1rem auto;
+    padding: .7rem 0;
+    font-size: 1rem;
+    font-weight: bold;
+}
+.popup input:focus {
+    outline: none;
+}
+.buttons {
+    background-color: green;
+    padding-top: 1rem;
+    display: flex;
+}
+.buttons button {
+    display: inline-block;
+    width: 50%;
+    height: 40px;
+    background-color: coral;
+    border: none;
+    outline: 1px solid black;;
+    transition: .5s;
+    font-size: 1rem;
+}
+.buttons button:hover {
+    background-color: crimson;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    display: none;
+}
