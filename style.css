@@ -58,6 +58,9 @@ header button:hover,
     border: none;
     padding: 10px 0;;
 }
+.book .book-title {
+    text-align: center;
+}
 .book .header button:hover,
 .increase:hover,
 .decrease:hover {

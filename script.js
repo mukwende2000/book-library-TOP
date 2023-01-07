@@ -5,81 +5,21 @@ const popup = document.querySelector('.popup');
 const books = document.querySelector('.books');
 const overlay = document.querySelector('.overlay');
 
-const myLibrary = [];
-const library = new Library();
-const stats = new Information();
-const form = new Form();
-const helperFunctions = new HelperFunctions();
-
-popupBtn.addEventListener('click', form.displayForm);
-cancelBtn.addEventListener('click', form.hideForm);
-addBtn.addEventListener('click', library.addBookToLibrary);
-document.addEventListener('click', (e) => {
-  if (helperFunctions.hasClass(e.target, 'remove-btn')) {
-    library.removeBookFromLibrary(e);
-    stats.removeBookFromStats(e);
-  } else if (helperFunctions.hasClass(e.target, 'decrease')) {
-    stats.decreaseReadPages(e);
-  } else if (helperFunctions.hasClass(e.target, 'increase')) {
-    stats.increaseReadPages(e);
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
   }
-});
-
-function Information() {
-  const completedPageStats = document.querySelector('.completed-stats');
-  const completedBookStats = document.querySelector('.completed-book-stats');
-  const totalPageStats = document.querySelector('.total-page-stats');
-  const bookStats = document.querySelector('.books-stats');
-  this.removeBookFromStats = (e) => {
-    bookStats.textContent--;
-    totalPageStats.textContent = +totalPageStats.textContent - +e.target.parentElement.parentElement.children[3].children[0].textContent;
-    completedPageStats.textContent = +completedPageStats.textContent - +e.target.parentElement.parentElement.children[3].children[1].textContent;
-    if (+e.target.parentElement.parentElement.children[3].children[1].textContent === +e.target.parentElement.parentElement.children[3].children[0].textContent) {
-      completedBookStats.textContent--;
-    }
-  };
-
-  this.addBookToStats = (book) => {
-    bookStats.textContent++;
-    totalPageStats.textContent = parseInt(totalPageStats.textContent) + parseInt(library.pagesInput.value);
-    if (book.read === 'Yes') {
-      completedBookStats.textContent++;
-      document.querySelectorAll('.completed')[myLibrary.length - 1].style.backgroundColor = 'green';
-    }
-    completedPageStats.textContent = parseInt(completedPageStats.textContent) + parseInt(library.completedPagesInput.value);
-  };
-
-  this.decreaseReadPages = (e) => {
-    // eslint-disable-next-line eqeqeq
-    if (completedPageStats.textContent == 0) return;
-    if (e.target.nextElementSibling.style.backgroundColor === 'green') completedBookStats.textContent--;
-    e.target.nextElementSibling.style.backgroundColor = 'red';
-    e.target.parentElement.nextElementSibling.children[1].textContent--;
-    // eslint-disable-next-line eqeqeq
-    completedPageStats.textContent--;
-  };
-
-  this.increaseReadPages = (e) => {
-    if (e.target.previousElementSibling.style.backgroundColor === 'green') return;
-    completedPageStats.textContent++;
-    e.target.parentElement.nextElementSibling.children[1].textContent++;
-    if (+e.target.parentElement.parentElement.children[3].children[1].textContent === +e.target.parentElement.parentElement.children[3].children[0].textContent) {
-      completedBookStats.textContent++;
-      e.target.previousElementSibling.style.backgroundColor = 'green';
-    }
-  };
 }
 
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-}
+class Library {
+  constructor() {
+    [this.titleInput, this.authorInput, this.pagesInput, this.completedPagesInput] = [...document.querySelectorAll('input')];
+  }
 
-function Library() {
-  [this.titleInput, this.authorInput, this.pagesInput, this.completedPagesInput] = [...document.querySelectorAll('input')];
-  this.addBookToLibrary = () => {
+  addBookToLibrary = () => {
     let read;
     if (form.validateInputs() === false) return;
     if (this.pagesInput.value === this.completedPagesInput.value) {
@@ -99,7 +39,7 @@ function Library() {
     }, 1000);
   };
 
-  this.removeBookFromLibrary = (e) => {
+  removeBookFromLibrary = (e) => {
     books.removeChild(e.target.parentElement.parentElement);
     myLibrary.forEach((element) => {
       if (element.title === e.target.parentElement.parentElement.children[1].children[0].textContent) {
@@ -109,18 +49,20 @@ function Library() {
   };
 }
 
-function Form() {
-  const inputs = document.querySelectorAll('input');
-  const message = document.querySelector('.message');
+class Form {
+  constructor() {
+    this.inputs = document.querySelectorAll('input');
+    this.message = document.querySelector('.message');
+  }
 
-  this.validateInputs = () => {
+  validateInputs() {
     let firstval = true;
     let secondval = true;
-    if ([...inputs].some((child) => !child.value)) {
-      message.textContent = 'Please fill in all fields';
+    if ([...this.inputs].some((child) => !child.value)) {
+      this.message.textContent = 'Please fill in all fields';
       firstval = false;
-    } else if (+inputs[2].value < +inputs[3].value) {
-      message.textContent = "Read pages can't be larger than total pages";
+    } else if (+this.inputs[2].value < +this.inputs[3].value) {
+      this.message.textContent = "Read pages can't be larger than total pages";
       secondval = false;
     }
     if (firstval === true && secondval === true) {
@@ -129,14 +71,15 @@ function Form() {
     return false;
   };
 
-  this.displayForm = () => {
+  displayForm() {
     overlay.style.display = 'block';
     popup.style.display = 'block';
     setTimeout(() => {
       popup.style.opacity = 1;
     }, 100);
   };
-  this.hideForm = () => {
+
+  hideForm() {
     overlay.style.display = 'none';
     popup.style.opacity = 0;
     setTimeout(() => {
@@ -145,17 +88,90 @@ function Form() {
   };
 }
 
-function HelperFunctions() {
-  this.createElements = (elementType, className, text) => {
-    const element = document.createElement(elementType);
-    if (className !== undefined) element.className = className;
-    element.textContent = text;
-    return element;
-  };
+class Information {
+  constructor() {
+    this.completedPageStats = document.querySelector('.completed-stats');
+    this.completedBookStats = document.querySelector('.completed-book-stats');
+    this.totalPageStats = document.querySelector('.total-page-stats');
+    this.bookStats = document.querySelector('.books-stats');
+  }
+    removeBookFromStats(e) {
+      this.bookStats.textContent--;
+      this.totalPageStats.textContent = +this.totalPageStats.textContent - +e.target.parentElement.parentElement.children[3].children[0].textContent;
+      this.completedPageStats.textContent = +this.completedPageStats.textContent - +e.target.parentElement.parentElement.children[3].children[1].textContent;
+      if (+e.target.parentElement.parentElement.children[3].children[1].textContent === +e.target.parentElement.parentElement.children[3].children[0].textContent) {
+        this.completedBookStats.textContent--;
+      }
+    };
 
-  // THIS FUNCTION HELPS WITH EVENT DELEGATION
-  this.hasClass = (element, className) => element.className.split(' ').indexOf(className) > -1;
+    addBookToStats(book) {
+      this.bookStats.textContent++;
+      this.totalPageStats.textContent = parseInt(this.totalPageStats.textContent) + parseInt(library.pagesInput.value);
+      if (book.read === 'Yes') {
+        this.completedBookStats.textContent++;
+        document.querySelectorAll('.completed')[myLibrary.length - 1].style.backgroundColor = 'green';
+      }
+      this.completedPageStats.textContent = parseInt(this.completedPageStats.textContent) + parseInt(library.completedPagesInput.value);
+    };
+
+    decreaseReadPages(e) {
+      // eslint-disable-next-line eqeqeq
+      if (this.completedPageStats.textContent == 0)
+        return;
+      if (e.target.nextElementSibling.style.backgroundColor === 'green')
+        this.completedBookStats.textContent--;
+      e.target.nextElementSibling.style.backgroundColor = 'red';
+      e.target.parentElement.nextElementSibling.children[1].textContent--;
+      // eslint-disable-next-line eqeqeq
+      this.completedPageStats.textContent--;
+    };
+
+    increaseReadPages(e) {
+      if (e.target.previousElementSibling.style.backgroundColor === 'green')
+        return;
+      this.completedPageStats.textContent++;
+      e.target.parentElement.nextElementSibling.children[1].textContent++;
+      if (+e.target.parentElement.parentElement.children[3].children[1].textContent === +e.target.parentElement.parentElement.children[3].children[0].textContent) {
+        this.completedBookStats.textContent++;
+        e.target.previousElementSibling.style.backgroundColor = 'green';
+      }
+    };
 }
+
+class HelperFunctions {
+  constructor() {
+    this.createElements = (elementType, className, text) => {
+      const element = document.createElement(elementType);
+      if (className !== undefined)
+        element.className = className;
+      element.textContent = text;
+      return element;
+    };
+    
+    // THIS FUNCTION HELPS WITH EVENT DELEGATION
+    this.hasClass = (element, className) => element.className.split(' ').indexOf(className) > -1;
+  }
+}
+
+const myLibrary = [];
+const library = new Library();
+const stats = new Information();
+const form = new Form();
+const helperFunctions = new HelperFunctions();
+
+popupBtn.addEventListener('click', form.displayForm);
+cancelBtn.addEventListener('click', form.hideForm);
+addBtn.addEventListener('click', library.addBookToLibrary);
+document.addEventListener('click', (e) => {
+  if (helperFunctions.hasClass(e.target, 'remove-btn')) {
+    library.removeBookFromLibrary(e);
+    stats.removeBookFromStats(e);
+  } else if (helperFunctions.hasClass(e.target, 'decrease')) {
+    stats.decreaseReadPages(e);
+  } else if (helperFunctions.hasClass(e.target, 'increase')) {
+    stats.increaseReadPages(e);
+  }
+});
 
 function bookHtml() {
   const newBook = helperFunctions.createElements('div', 'book');
